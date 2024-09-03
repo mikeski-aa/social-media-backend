@@ -1,6 +1,7 @@
 const LocalStrategy = require("passport-local").Strategy;
 const passport = require("passport");
 const { prisma } = require("../config/db");
+const { validatePassword } = require("../lib/passportUtils");
 
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
