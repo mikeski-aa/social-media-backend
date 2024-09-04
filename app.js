@@ -4,18 +4,17 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
+require("dotenv").config();
 
 var indexRouter = require("./routes/index");
 var apiRouter = require("./routes/api");
+const passport = require("passport");
+require("./config/passport");
 
 var app = express();
 
 const corsOptions = {
-  origin: [
-    process.env.LOCAL_URL,
-    process.env.NONLOCAL_URL,
-    "dmmeapp.netlify.app",
-  ],
+  origin: ["http://localhost:5173"],
   optionSuccessStatus: 200,
 };
 

@@ -1,10 +1,10 @@
 const { body, validationResult } = require("express-validator");
 
 exports.registerValidation = [
-  body("username").exists().length({ min: 1, max: 15 }).trim().escape(),
-  body("email").exists().length({ min: 1 }).isEmail().trim().escape(),
-  body("password").exists().length({ min: 1 }).trim().escape(),
-  body("confirmPassword").exists().length({ min: 1 }).trim().escape(),
+  body("username").isLength({ min: 1, max: 15 }).trim().escape(),
+  body("email").isLength({ min: 1 }).isEmail().trim().escape(),
+  body("password").isLength({ min: 1 }).trim().escape(),
+  body("confirmPassword").isLength({ min: 1 }).trim().escape(),
   function (req, res, next) {
     const errors = validationResult(req);
 
