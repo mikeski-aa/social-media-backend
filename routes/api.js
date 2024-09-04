@@ -1,7 +1,11 @@
-var express = require("express");
-const { registerValidation } = require("../middleware/validateInput");
+const express = require("express");
+const {
+  registerValidation,
+  loginValidation,
+} = require("../middleware/validateInput");
 const apiController = require("../controllers/apiController");
-var router = express.Router();
+const router = express.Router();
+const passport = require("passport");
 
 router.get("/", function (req, res, next) {
   res.send("test");
@@ -9,5 +13,12 @@ router.get("/", function (req, res, next) {
 
 // first validate user input data is OK via middleware
 router.post("/user", registerValidation, apiController.postUser);
+
+router.post(
+  "/login",
+  loginValidation,
+  passport.authenticate("local", { session: "false" }),
+  apiController.postLogin
+);
 
 module.exports = router;
