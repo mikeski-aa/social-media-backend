@@ -14,11 +14,19 @@ router.get("/", function (req, res, next) {
 // first validate user input data is OK via middleware
 router.post("/user", registerValidation, apiController.postUser);
 
+// LOGIN with validation middleware for input
 router.post(
   "/login",
   loginValidation,
-  passport.authenticate("local", { session: "false" }),
+  passport.authenticate("local", { session: false }),
   apiController.postLogin
+);
+
+// check login status
+router.get(
+  "/login",
+  passport.authenticate("jwt", { session: false }),
+  apiController.getLoginStatus
 );
 
 module.exports = router;

@@ -17,10 +17,15 @@ exports.postUser = asyncHandler(async (req, res, next) => {
 
 // login
 exports.postLogin = asyncHandler(async (req, res, next) => {
-  console.log("test");
+  console.log("post login function entered");
   const token = jwt.sign({ email: req.user.email }, "secret", {
     expiresIn: "12h",
   });
-
   return res.json({ token: token });
+});
+
+// check login status
+exports.getLoginStatus = asyncHandler(async (req, res, next) => {
+  console.log(req.user);
+  return res.json(req.user);
 });

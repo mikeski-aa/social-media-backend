@@ -22,9 +22,11 @@ const verifyCallback = (email, password, done) => {
       if (!user) {
         console.log("USER NOT FOUND");
         // user not present in DB
+        // pass done callback to passport stating user was not found
         return done(null, false);
       }
-
+      // function checking validity from utils -> compares password hash v.s stored hash
+      // true or false
       const isValid = validatePassword(password, user.hash);
       if (isValid) {
         console.log("validation OK");
@@ -34,8 +36,8 @@ const verifyCallback = (email, password, done) => {
         return done(null, false);
       }
     })
-    .catch((error) => {
-      done(error);
+    .catch((err) => {
+      done(err);
     });
 };
 
