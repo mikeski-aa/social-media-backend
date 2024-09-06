@@ -6,6 +6,8 @@ const {
 const apiController = require("../controllers/apiController");
 const router = express.Router();
 const passport = require("passport");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
 
 router.get("/", function (req, res, next) {
   res.send("test");
@@ -28,5 +30,10 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   apiController.getLoginStatus
 );
+
+// post new status
+router.post("/status", function (req, res) {
+  console.log("test");
+});
 
 module.exports = router;

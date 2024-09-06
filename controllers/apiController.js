@@ -29,3 +29,13 @@ exports.getLoginStatus = asyncHandler(async (req, res, next) => {
   console.log(req.user);
   return res.json(req.user);
 });
+
+// create a new post
+exports.postStatus = asyncHandler(async (req, res, next) => {
+  console.log("POST STATUS CONTROLLER");
+  console.log(req.user);
+  console.log(req.body);
+  console.log(req.file.path);
+
+  return res.json({ text: "XD" });
+});
