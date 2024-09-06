@@ -7,7 +7,7 @@ const apiController = require("../controllers/apiController");
 const router = express.Router();
 const passport = require("passport");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/", limits: 5000 });
 
 router.get("/", function (req, res, next) {
   res.send("test");
@@ -31,9 +31,22 @@ router.get(
   apiController.getLoginStatus
 );
 
+// need to create specific route for uploading pictures only
+// there might be a way to upload image and picture in the same route, but I cant figure it out
+
+// post new picture
+router.post(
+  "/statuspic",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("picture"),
+  apiController.postNewPic
+);
+
 // post new status
-router.post("/status", function (req, res) {
-  console.log("test");
-});
+router.post(
+  "/status",
+  passport.authenticate("jwt", { session: false }),
+  apiController.postStatus
+);
 
 module.exports = router;

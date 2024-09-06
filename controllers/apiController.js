@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { body, query } = require("express-validator");
 const { genPassword } = require("../lib/passportUtils");
 const { postNewUser } = require("../services/postNewUser");
+const { postPicture } = require("../services/postPicture");
 const jwt = require("jsonwebtoken");
 
 exports.postUser = asyncHandler(async (req, res, next) => {
@@ -30,12 +31,22 @@ exports.getLoginStatus = asyncHandler(async (req, res, next) => {
   return res.json(req.user);
 });
 
+// post a new picture
+exports.postNewPic = asyncHandler(async (req, res, next) => {
+  console.log(req.file.path);
+
+  // call service to upload picture to cloudinary
+  const response = await postPicture(req.file.path);
+
+  console.log(response);
+  return res.json(response);
+});
+
 // create a new post
 exports.postStatus = asyncHandler(async (req, res, next) => {
   console.log("POST STATUS CONTROLLER");
   console.log(req.user);
   console.log(req.body);
-  console.log(req.file.path);
 
   return res.json({ text: "XD" });
 });
