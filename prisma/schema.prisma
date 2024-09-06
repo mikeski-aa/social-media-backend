@@ -21,6 +21,8 @@ model user {
   profilePic String @default("default")
   posts post[]
   comments comment[]
+  friends user[] @relation("friends")
+  friendOf user[] @relation("friends")
 }
 
 model post {
