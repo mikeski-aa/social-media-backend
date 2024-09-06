@@ -49,4 +49,11 @@ router.post(
   apiController.postStatus
 );
 
+// get status
+router.get(
+  "/status",
+  passport.authenticate("jwt", { session: false }),
+  apiController.getStatus
+);
+
 module.exports = router;

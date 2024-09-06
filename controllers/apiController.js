@@ -4,6 +4,7 @@ const { genPassword } = require("../lib/passportUtils");
 const { postNewUser } = require("../services/postNewUser");
 const { postPicture } = require("../services/postPicture");
 const { postStatus } = require("../services/postStatus");
+const { getStatuses } = require("../services/getStatuses");
 const jwt = require("jsonwebtoken");
 
 exports.postUser = asyncHandler(async (req, res, next) => {
@@ -68,3 +69,14 @@ exports.postStatus = [
     return res.json(response);
   }),
 ];
+
+// get status
+exports.getStatus = asyncHandler(async (req, res, next) => {
+  console.log(req.user);
+
+  // call service to return status info
+  const response = await getStatuses(req.user.id);
+  console.log(response);
+
+  return res.json(response);
+});

@@ -18,6 +18,7 @@ model user {
   email String @unique
   hash String 
   username String @unique
+  profilePic String @default("default")
   posts post[]
   comments comment[]
 }
