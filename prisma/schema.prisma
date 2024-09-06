@@ -27,8 +27,8 @@ model post {
   user user @relation(fields: [userId], references: [id])
   userId Int
   text String @db.VarChar(1000)
-  imageUrl String 
-  likes Int 
+  imageUrl String?
+  likes Int? @default(0)
   postDate DateTime @default(now())
   comments comment[]
 }
@@ -40,5 +40,5 @@ model comment {
   user user @relation(fields: [userId], references: [id])
   userId Int
   commentDate DateTime @default(now())
-  likes Int
+  likes Int? @default(0)
 }

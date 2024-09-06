@@ -1,8 +1,9 @@
 const asyncHandler = require("express-async-handler");
-const { body, query } = require("express-validator");
+const { body, query, validationResult } = require("express-validator");
 const { genPassword } = require("../lib/passportUtils");
 const { postNewUser } = require("../services/postNewUser");
 const { postPicture } = require("../services/postPicture");
+const { postStatus } = require("../services/postStatus");
 const jwt = require("jsonwebtoken");
 
 exports.postUser = asyncHandler(async (req, res, next) => {
@@ -43,10 +44,27 @@ exports.postNewPic = asyncHandler(async (req, res, next) => {
 });
 
 // create a new post
-exports.postStatus = asyncHandler(async (req, res, next) => {
-  console.log("POST STATUS CONTROLLER");
-  console.log(req.user);
-  console.log(req.body);
+exports.postStatus = [
+  body("text").isLength({ max: 1000 }).escape(),
 
-  return res.json({ text: "XD" });
-});
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Validation error" });
+    }
+
+    console.log("POST STATUS CONTROLLER");
+    console.log(req.user);
+    console.log(req.body);
+
+    // call service to create a new post!
+    const response = await postStatus(
+      req.body.text,
+      req.body.imageUrl,
+      req.user
+    );
+    console.log(response);
+    return res.json(response);
+  }),
+];
