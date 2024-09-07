@@ -31,6 +31,4 @@ async function getStatuses(idArray, limit) {
   }
 }
 
-getStatuses([17, 18], 99);
-
 module.exports = { getStatuses };

@@ -5,6 +5,7 @@ const { postNewUser } = require("../services/postNewUser");
 const { postPicture } = require("../services/postPicture");
 const { postStatus } = require("../services/postStatus");
 const { getStatuses } = require("../services/getStatuses");
+const { getUserIdArray } = require("../services/getUserIdArray");
 const jwt = require("jsonwebtoken");
 
 exports.postUser = asyncHandler(async (req, res, next) => {
@@ -74,8 +75,9 @@ exports.postStatus = [
 exports.getStatus = asyncHandler(async (req, res, next) => {
   console.log(req.user);
 
-  // call service to return status info
-  const response = await getStatuses(req.user.id);
+  // call service to return user id array first
+  const userIdArray = await getUserIdArray(req.user.id);
+  const response = await getStatuses(userIdArray, 10);
   console.log(response);
 
   return res.json(response);

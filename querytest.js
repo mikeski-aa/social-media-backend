@@ -108,4 +108,4 @@ async function desd(userId) {
   postList.push(response[0].id);
   console.log(postList);
 }
-desd(17);
+// desd(17);

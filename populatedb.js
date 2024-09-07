@@ -112,4 +112,4 @@ async function getposts(userA) {
 // poststatus("19 post", "basdasdasdasdasdas", 19);
 // updateFriendsList(17, 19);
 // test();
-getposts(17);
+// getposts(17);
