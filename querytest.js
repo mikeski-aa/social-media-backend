@@ -85,4 +85,27 @@ async function test(userId) {
   console.log(response);
 }
 
-test(17);
+// test(17);
+
+async function desd(userId) {
+  const response = await prisma.user.findMany({
+    where: {
+      id: userId,
+    },
+    include: {
+      friends: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+
+  let queryid = [];
+  const postList = response.flatMap((user) =>
+    user.friends.flatMap((friend) => friend.id)
+  );
+  postList.push(response[0].id);
+  console.log(postList);
+}
+desd(17);
