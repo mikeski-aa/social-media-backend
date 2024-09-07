@@ -22,11 +22,10 @@ async function test(params) {
   const response = await prisma.user.findMany({
     include: {
       friends: true,
-      friendOf: true,
     },
   });
 
-  console.log(response);
+  console.log(response[0]);
 }
 
 // createUser("testUser", "xd@xd.com", "asdasdASAXSXA");
@@ -54,26 +53,6 @@ async function updateFriendsList(userA, userB) {
   return responseOne, responseTwo;
 }
 
-async function getposts(userA) {
-  const responseOne = await prisma.user.findMany({
-    where: {
-      id: +userA,
-    },
-    select: {
-      friends: {
-        select: {
-          posts: true,
-        },
-      },
-      posts: true,
-    },
-  });
-
-  console.log(responseOne[0]);
-
-  return responseOne;
-}
-
 async function poststatus(text, url, user) {
   console.log("POST STATUS SERVICE FUNCTION");
   console.log(text, url, user);
@@ -95,7 +74,39 @@ async function poststatus(text, url, user) {
     return error;
   }
 }
-// poststatus("testtest", "xd", 18);
-// updateFriendsList(17, 18);
+
+async function getposts(userA) {
+  const responseOne = await prisma.user.findMany({
+    where: {
+      id: +userA,
+    },
+    select: {
+      friends: {
+        select: {
+          posts: true,
+        },
+      },
+      posts: true,
+    },
+  });
+
+  const tempArray = [];
+
+  for (let x = 0; x < responseOne[0].friends.length; x++) {
+    for (let y = 0; y < responseOne[0].friends[x].posts.length; y++) {
+      tempArray.push(responseOne[0].friends[x].posts[y]);
+    }
+  }
+
+  for (let x = 0; x < responseOne[0].posts.length; x++) {
+    tempArray.push(responseOne[0].posts[x]);
+  }
+
+  console.log(tempArray);
+
+  return tempArray;
+}
+// poststatus("19 post", "basdasdasdasdasdas", 19);
+// updateFriendsList(17, 19);
 // test();
 getposts(17);
