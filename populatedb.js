@@ -77,6 +77,8 @@ async function poststatus(text, url, user) {
 
 async function getposts(userA) {
   const responseOne = await prisma.user.findMany({
+    skip: 0,
+    take: 1,
     where: {
       id: +userA,
     },
@@ -84,25 +86,26 @@ async function getposts(userA) {
       friends: {
         select: {
           posts: true,
+          username: true,
         },
       },
-      posts: true,
     },
+    take: 1,
   });
 
   const tempArray = [];
 
-  for (let x = 0; x < responseOne[0].friends.length; x++) {
-    for (let y = 0; y < responseOne[0].friends[x].posts.length; y++) {
-      tempArray.push(responseOne[0].friends[x].posts[y]);
-    }
-  }
+  // for (let x = 0; x < responseOne[0].friends.length; x++) {
+  //   for (let y = 0; y < responseOne[0].friends[x].posts.length; y++) {
+  //     tempArray.push(responseOne[0].friends[x].posts[y]);
+  //   }
+  // }
 
-  for (let x = 0; x < responseOne[0].posts.length; x++) {
-    tempArray.push(responseOne[0].posts[x]);
-  }
+  // for (let x = 0; x < responseOne[0].posts.length; x++) {
+  //   tempArray.push(responseOne[0].posts[x]);
+  // }
 
-  console.log(tempArray);
+  console.log(responseOne[0].friends);
 
   return tempArray;
 }
