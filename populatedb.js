@@ -113,3 +113,51 @@ async function getposts(userA) {
 // updateFriendsList(17, 19);
 // test();
 // getposts(17);
+
+////////// populate db with some comments
+async function postComment(text, postid, user) {
+  console.log("POST comment SERVICE FUNCTION");
+
+  try {
+    const response = await prisma.comment.create({
+      data: {
+        userId: +user,
+        text: text,
+        postId: +postid,
+      },
+    });
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+// postComment("My first comment on this post!", 14, 17);
+// postComment("Testing the comment feature", 14, 18);
+// postComment("mOST RECENT COMMENT", 14, 17);
+
+async function findPosts(postid) {
+  console.log("GET comment SERVICE FUNCTION");
+
+  try {
+    const response = await prisma.comment.findMany({
+      where: {
+        postId: +postid,
+      },
+      orderBy: {
+        commentDate: "desc",
+      },
+    });
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+findPosts(14);

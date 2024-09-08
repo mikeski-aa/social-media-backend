@@ -21,8 +21,6 @@ async function getUserIdArray(userId) {
 
     postList.push(response[0].id);
 
-    console.log(postList);
-
     return postList;
   } catch (error) {
     console.log(error);

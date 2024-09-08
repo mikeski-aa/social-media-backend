@@ -23,7 +23,6 @@ async function getStatuses(idArray, limit) {
       take: limit,
     });
 
-    console.log(response);
     return response;
   } catch (error) {
     console.log(error);

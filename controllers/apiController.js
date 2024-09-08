@@ -72,13 +72,22 @@ exports.postStatus = [
 ];
 
 // get status
-exports.getStatus = asyncHandler(async (req, res, next) => {
-  console.log(req.user);
+exports.getStatus = [
+  query("count").escape().trim().toInt(),
 
-  // call service to return user id array first
-  const userIdArray = await getUserIdArray(req.user.id);
-  const response = await getStatuses(userIdArray, 10);
-  console.log(response);
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
 
-  return res.json(response);
-});
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+    console.log(req.user);
+    console.log(req.query.count);
+
+    // call service to return user id array first
+    const userIdArray = await getUserIdArray(req.user.id);
+    const response = await getStatuses(userIdArray, req.query.count);
+
+    return res.json(response);
+  }),
+];
