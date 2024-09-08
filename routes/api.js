@@ -56,4 +56,10 @@ router.get(
   apiController.getStatus
 );
 
+router.get(
+  "/comments",
+  passport.authenticate("jwt", { session: false }),
+  apiController.getComments
+);
+
 module.exports = router;

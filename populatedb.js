@@ -147,6 +147,15 @@ async function findPosts(postid) {
       where: {
         postId: +postid,
       },
+      include: {
+        user: {
+          select: {
+            username: true,
+            id: true,
+            profilePic: true,
+          },
+        },
+      },
       orderBy: {
         commentDate: "desc",
       },

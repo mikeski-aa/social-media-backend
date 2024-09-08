@@ -6,6 +6,7 @@ const { postPicture } = require("../services/postPicture");
 const { postStatus } = require("../services/postStatus");
 const { getStatuses } = require("../services/getStatuses");
 const { getUserIdArray } = require("../services/getUserIdArray");
+const { getPostComments } = require("../services/getPostComments");
 const jwt = require("jsonwebtoken");
 
 exports.postUser = asyncHandler(async (req, res, next) => {
@@ -89,5 +90,23 @@ exports.getStatus = [
     const response = await getStatuses(userIdArray, req.query.count);
 
     return res.json(response);
+  }),
+];
+
+// GET COMMENTS
+exports.getComments = [
+  query("postid").escape().trim().toInt,
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    // call service to return user id array first
+    const comments = await getPostComments(req.query.postid);
+
+    return res.json(comments);
   }),
 ];
