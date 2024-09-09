@@ -16,6 +16,11 @@ async function getStatuses(idArray, limit) {
             profilePic: true,
           },
         },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
       },
       orderBy: {
         postDate: "desc",
