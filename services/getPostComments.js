@@ -1,4 +1,4 @@
-const { prisma } = require("./config/db");
+const { prisma } = require("../config/db");
 
 async function getPostComments(postid) {
   try {
@@ -19,6 +19,7 @@ async function getPostComments(postid) {
         commentDate: "desc",
       },
     });
+    console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -27,3 +28,5 @@ async function getPostComments(postid) {
 }
 
 module.exports = { getPostComments };
+
+// getPostComments(14);

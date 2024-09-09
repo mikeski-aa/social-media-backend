@@ -7,6 +7,7 @@ const { postStatus } = require("../services/postStatus");
 const { getStatuses } = require("../services/getStatuses");
 const { getUserIdArray } = require("../services/getUserIdArray");
 const { getPostComments } = require("../services/getPostComments");
+const { postNewComment } = require("../services/postNewComment");
 const jwt = require("jsonwebtoken");
 
 exports.postUser = asyncHandler(async (req, res, next) => {
@@ -95,9 +96,10 @@ exports.getStatus = [
 
 // GET COMMENTS
 exports.getComments = [
-  query("postid").escape().trim().toInt,
+  query("postid").escape().trim().toInt(),
 
   asyncHandler(async (req, res, next) => {
+    console.log("valid routing detected");
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -108,5 +110,27 @@ exports.getComments = [
     const comments = await getPostComments(req.query.postid);
 
     return res.json(comments);
+  }),
+];
+
+// POST a new comment
+exports.postComment = [
+  body("text").escape().trim().isLength({ min: 1, max: 1000 }),
+  body("postid").escape().trim().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    // call post service
+    const response = await postNewComment(
+      req.user.id,
+      req.body.postid,
+      req.body.text
+    );
+    return res.json(response);
   }),
 ];
