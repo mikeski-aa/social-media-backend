@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "comment" ALTER COLUMN "likes" SET DEFAULT ARRAY[]::INTEGER[];
+
+-- AlterTable
+ALTER TABLE "post" ALTER COLUMN "likes" SET DEFAULT ARRAY[]::INTEGER[];

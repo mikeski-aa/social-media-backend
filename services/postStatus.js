@@ -10,7 +10,6 @@ async function postStatus(text, url, user) {
         userId: +user.id,
         imageUrl: url,
         text: text,
-        likes: 0,
       },
     });
 
