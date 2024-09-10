@@ -5,12 +5,11 @@ async function getLikeArrayForPost(postid, userid) {
     const response = await prisma.post.findFirst({
       where: {
         id: +postid,
-        likes: {
-          has: +userid,
-        },
+      },
+      select: {
+        likes: true,
       },
     });
-    console.log(response);
     return response;
   } catch (error) {
     console.log(error);

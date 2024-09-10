@@ -140,9 +140,7 @@ exports.postComment = [
 ];
 
 exports.putLike = [
-  query("update").escape().trim(),
   query("postid").escape().trim().toInt(),
-  query("likeArray").escape().trim(),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -152,27 +150,30 @@ exports.putLike = [
     }
 
     // first check if user is already liking the post
-    const response = await getLikeArrayForPost(req.query.postid, req.user.id);
+    const likedArray = await getLikeArrayForPost(req.query.postid, req.user.id);
     console.log("//////////////////");
-    console.log(response);
+    console.log(likedArray);
 
-    if (response === null) {
-      const updateArray = await updateLikesAdd(req.query.postid, req.user.id);
-      console.log("//////////////////");
-      console.log(updateArray);
+    // check if array contains user ID
+    const filterForUser = likedArray.likes.filter(
+      (item) => item === req.user.id
+    );
+
+    console.log(filterForUser.length);
+    // if length is 0, aka no user found, we add a like
+    // otherwise we remove the like to work like a toggle
+    if (filterForUser.length === 0) {
+      console.log("post not liked yet :");
+      const addLike = await updateLikesAdd(req.query.postid, req.user.id);
+      console.log("likes: " + addLike.likes);
+      return res.json(addLike.like);
     } else {
-      console.log("arleady liekd the post! cant like again need to remove");
+      console.log("post already liked!");
+      const newArray = likedArray.likes.filter((like) => like != req.user.id);
+      console.log(newArray);
+      const removeLike = await updateLikesRemove(req.query.postid, newArray);
+      console.log("likes: " + removeLike.likes);
+      return res.json(removeLike.like);
     }
-
-    // if (req.query.update === "remove") {
-    //   const response = await updateLikesRemove(
-    //     req.query.postid,
-    //     req.query.likeArray
-    //   );
-    //   return res.json(response);
-    // } else {
-    //   const response = await updateLikesAdd(req.query.postid, req.user.id);
-    //   return res.json(response);
-    // }
   }),
 ];

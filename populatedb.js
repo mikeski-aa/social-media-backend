@@ -169,4 +169,26 @@ async function findPosts(postid) {
   }
 }
 
-findPosts(14);
+// findPosts(14);
+
+async function updateLikesAdd(postid, userid) {
+  try {
+    const response = await prisma.post.update({
+      where: {
+        id: +postid,
+      },
+      data: {
+        likes: {
+          push: +userid,
+        },
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+// updateLikesAdd(27, 17);
