@@ -11,6 +11,13 @@ const { postNewComment } = require("../services/postNewComment");
 const { updateLikesAdd } = require("../services/updateLikesAdd");
 const { updateLikesRemove } = require("../services/updateLikesRemove");
 const { getLikeArrayForPost } = require("../services/getLikeArrayForPost");
+const {
+  getLikeArrayForComment,
+} = require("../services/getLikeArrayForComment");
+const { updateCommentLikesAdd } = require("../services/updateCommentLikesAdd");
+const {
+  updateCommentLikesRemove,
+} = require("../services/updateCommentLikesRemove");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -139,6 +146,7 @@ exports.postComment = [
   }),
 ];
 
+// update post likes
 exports.putLike = [
   query("postid").escape().trim().toInt(),
 
@@ -151,6 +159,46 @@ exports.putLike = [
 
     // first check if user is already liking the post
     const likedArray = await getLikeArrayForPost(req.query.postid, req.user.id);
+
+    // check if array contains user ID
+    const filterForUser = likedArray.likes.filter(
+      (item) => item === req.user.id
+    );
+
+    // if length is 0, aka no user found, we add a like
+    // otherwise we remove the like to work like a toggle
+    if (filterForUser.length === 0) {
+      console.log("post not liked yet :");
+      const addLike = await updateLikesAdd(req.query.postid, req.user.id);
+      console.log("likes: " + addLike.likes);
+      return res.json(addLike);
+    } else {
+      console.log("post already liked!");
+      const newArray = likedArray.likes.filter((like) => like != req.user.id);
+      console.log(newArray);
+      const removeLike = await updateLikesRemove(req.query.postid, newArray);
+      console.log("likes: " + removeLike.likes);
+      return res.json(removeLike);
+    }
+  }),
+];
+
+// update comment likes
+exports.putLikeComment = [
+  query("commentid").escape().trim().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    // first check if user is already liking the post
+    const likedArray = await getLikeArrayForComment(
+      req.query.commentid,
+      req.user.id
+    );
     console.log("//////////////////");
     console.log(likedArray);
 
@@ -159,21 +207,23 @@ exports.putLike = [
       (item) => item === req.user.id
     );
 
-    console.log(filterForUser.length);
     // if length is 0, aka no user found, we add a like
     // otherwise we remove the like to work like a toggle
     if (filterForUser.length === 0) {
       console.log("post not liked yet :");
-      const addLike = await updateLikesAdd(req.query.postid, req.user.id);
-      console.log("likes: " + addLike.likes);
-      return res.json(addLike.like);
+      const addLike = await updateCommentLikesAdd(
+        req.query.commentid,
+        req.user.id
+      );
+      return res.json(addLike);
     } else {
       console.log("post already liked!");
       const newArray = likedArray.likes.filter((like) => like != req.user.id);
-      console.log(newArray);
-      const removeLike = await updateLikesRemove(req.query.postid, newArray);
-      console.log("likes: " + removeLike.likes);
-      return res.json(removeLike.like);
+      const removeLike = await updateCommentLikesRemove(
+        req.query.commentid,
+        newArray
+      );
+      return res.json(removeLike);
     }
   }),
 ];

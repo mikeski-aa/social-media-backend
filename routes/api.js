@@ -70,10 +70,18 @@ router.post(
   apiController.postComment
 );
 
+// update post likes
 router.put(
   "/status/likes",
   passport.authenticate("jwt", { session: false }),
   apiController.putLike
+);
+
+// update comment likes
+router.put(
+  "/comments/likes",
+  passport.authenticate("jwt", { session: false }),
+  apiController.putLikeComment
 );
 
 module.exports = router;
