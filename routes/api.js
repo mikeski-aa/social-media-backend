@@ -70,4 +70,10 @@ router.post(
   apiController.postComment
 );
 
+router.put(
+  "/status",
+  passport.authenticate("jwt", { session: false }),
+  apiController.putLike
+);
+
 module.exports = router;

@@ -8,6 +8,8 @@ const { getStatuses } = require("../services/getStatuses");
 const { getUserIdArray } = require("../services/getUserIdArray");
 const { getPostComments } = require("../services/getPostComments");
 const { postNewComment } = require("../services/postNewComment");
+const { updateLikesAdd } = require("../services/updateLikesAdd");
+const { updateLikesRemove } = require("../services/updateLikesRemove");
 const jwt = require("jsonwebtoken");
 
 exports.postUser = asyncHandler(async (req, res, next) => {
@@ -132,5 +134,30 @@ exports.postComment = [
       req.body.text
     );
     return res.json(response);
+  }),
+];
+
+exports.putLike = [
+  query("update").escape().trim(),
+  query("postid").escape().trim().toInt(),
+  query("likeArray").escape().trim(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    if (req.query.update === "remove") {
+      const response = await updateLikesRemove(
+        req.query.postid,
+        req.query.likeArray
+      );
+      return res.json(response);
+    } else {
+      const response = await updateLikesAdd(req.query.postid, req.user.id);
+      return res.json(response);
+    }
   }),
 ];
