@@ -9,7 +9,7 @@ async function postNewComment(userid, postid, text) {
         text: text,
       },
     });
-    return response;
+    return response;d
   } catch (error) {
     console.log(error);
     return error;
