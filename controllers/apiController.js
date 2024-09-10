@@ -10,7 +10,9 @@ const { getPostComments } = require("../services/getPostComments");
 const { postNewComment } = require("../services/postNewComment");
 const { updateLikesAdd } = require("../services/updateLikesAdd");
 const { updateLikesRemove } = require("../services/updateLikesRemove");
+const { getLikeArrayForPost } = require("../services/getLikeArrayForPost");
 const jwt = require("jsonwebtoken");
+const { response } = require("express");
 
 exports.postUser = asyncHandler(async (req, res, next) => {
   // input already validated by middleware
@@ -149,15 +151,28 @@ exports.putLike = [
       return res.status(400).json({ error: "Error with query value" });
     }
 
-    if (req.query.update === "remove") {
-      const response = await updateLikesRemove(
-        req.query.postid,
-        req.query.likeArray
-      );
-      return res.json(response);
+    // first check if user is already liking the post
+    const response = await getLikeArrayForPost(req.query.postid, req.user.id);
+    console.log("//////////////////");
+    console.log(response);
+
+    if (response === null) {
+      const updateArray = await updateLikesAdd(req.query.postid, req.user.id);
+      console.log("//////////////////");
+      console.log(updateArray);
     } else {
-      const response = await updateLikesAdd(req.query.postid, req.user.id);
-      return res.json(response);
+      console.log("arleady liekd the post! cant like again need to remove");
     }
+
+    // if (req.query.update === "remove") {
+    //   const response = await updateLikesRemove(
+    //     req.query.postid,
+    //     req.query.likeArray
+    //   );
+    //   return res.json(response);
+    // } else {
+    //   const response = await updateLikesAdd(req.query.postid, req.user.id);
+    //   return res.json(response);
+    // }
   }),
 ];

@@ -71,7 +71,7 @@ router.post(
 );
 
 router.put(
-  "/status",
+  "/status/likes",
   passport.authenticate("jwt", { session: false }),
   apiController.putLike
 );
