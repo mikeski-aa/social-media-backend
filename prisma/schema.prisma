@@ -23,8 +23,8 @@ model user {
   comments comment[]
   friends user[] @relation("friends")
   friendOf user[] @relation("friends")
-  requestor request[] @relation("requestor")
-  requestee request[] @relation("requestee")
+  reqOut request[] @relation("requester")
+  reqIn request[] @relation("requestee")
 }
 
 model post {
@@ -51,8 +51,8 @@ model comment {
 
 model request {
   id Int @id @default(autoincrement())
-  requestor user @relation("requestor", fields: [requestorId], references: [id])
-  requestorId Int 
+  requester user @relation("requester", fields: [requesterId], references: [id])
+  requesterId Int 
   requestee user @relation("requestee", fields: [requesteeId], references: [id])
   requesteeId Int
   requestDate DateTime @default(now())

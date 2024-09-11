@@ -257,7 +257,7 @@ exports.getUsersSearch = [
 
 // post a new request
 exports.postRequest = [
-  query("requesteeid").trim().escape().toInt(),
+  body("requesteeid").trim().escape().toInt(),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -266,7 +266,7 @@ exports.postRequest = [
       return res.status(400).json({ error: "Error with query value" });
     }
 
-    const response = await postRequest(req.user.id, req.query.requesteeid);
+    const response = await postRequest(req.user.id, req.body.requesteeid);
 
     return res.json(response);
   }),
