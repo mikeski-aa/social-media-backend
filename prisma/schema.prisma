@@ -31,7 +31,7 @@ model post {
   userId Int
   text String @db.VarChar(1000)
   imageUrl String?
-  likes Int[] @unique @default([])
+  likes Int[]  @default([])
   postDate DateTime @default(now())
   comments comment[]
 }
@@ -44,5 +44,5 @@ model comment {
   userId Int
   commentDate DateTime @default(now())
   text String
-  likes Int[] @unique @default([])
+  likes Int[] @default([])
 }

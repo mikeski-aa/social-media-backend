@@ -84,4 +84,11 @@ router.put(
   apiController.putLikeComment
 );
 
+// get user friends
+router.get(
+  "/friends",
+  passport.authenticate("jwt", { session: false }),
+  apiController.getFriends
+);
+
 module.exports = router;

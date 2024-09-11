@@ -192,3 +192,52 @@ async function updateLikesAdd(postid, userid) {
 }
 
 // updateLikesAdd(27, 17);
+
+async function postStatus(text, url, user) {
+  console.log("POST STATUS SERVICE FUNCTION");
+  console.log(text, url, user);
+
+  try {
+    const response = await prisma.post.create({
+      data: {
+        userId: +user,
+        imageUrl: url,
+        text: text,
+      },
+    });
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+// postStatus("Testing post from user 19. Hello.", "", 19);
+// postStatus(
+//   "Testing post from user 18. ASDASDASDAS.",
+//   "https://static1.anpoimages.com/wordpress/wp-content/uploads/2023/04/the-google-images-page-is-shown-with-a-jpeg-file-icon-hovering-over-it.jpg",
+//   18
+// );
+
+async function testFriends(userid) {
+  const response = await prisma.user.findFirst({
+    where: {
+      id: userid,
+    },
+    select: {
+      friends: {
+        select: {
+          id: true,
+          username: true,
+          profilePic: true,
+        },
+      },
+    },
+  });
+
+  console.log(response);
+}
+
+// testFriends(17);

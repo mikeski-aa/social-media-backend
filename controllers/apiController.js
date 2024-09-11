@@ -18,6 +18,7 @@ const { updateCommentLikesAdd } = require("../services/updateCommentLikesAdd");
 const {
   updateCommentLikesRemove,
 } = require("../services/updateCommentLikesRemove");
+const { getFriends } = require("../services/getFriends");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -38,7 +39,7 @@ exports.postLogin = asyncHandler(async (req, res, next) => {
   const token = jwt.sign({ email: req.user.email }, "secret", {
     expiresIn: "12h",
   });
-  return res.json({ token: token });
+  return res.json({ token: token, user: req.user });
 });
 
 // check login status
@@ -227,3 +228,10 @@ exports.putLikeComment = [
     }
   }),
 ];
+
+// get friends
+exports.getFriends = asyncHandler(async (req, res, next) => {
+  const response = await getFriends(req.user.id);
+
+  res.json(response);
+});
