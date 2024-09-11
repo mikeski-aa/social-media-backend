@@ -23,6 +23,8 @@ model user {
   comments comment[]
   friends user[] @relation("friends")
   friendOf user[] @relation("friends")
+  requestor request[] @relation("requestor")
+  requestee request[] @relation("requestee")
 }
 
 model post {
@@ -45,4 +47,13 @@ model comment {
   commentDate DateTime @default(now())
   text String
   likes Int[] @default([])
+}
+
+model request {
+  id Int @id @default(autoincrement())
+  requestor user @relation("requestor", fields: [requestorId], references: [id])
+  requestorId Int 
+  requestee user @relation("requestee", fields: [requesteeId], references: [id])
+  requesteeId Int
+
 }

@@ -19,6 +19,7 @@ const {
   updateCommentLikesRemove,
 } = require("../services/updateCommentLikesRemove");
 const { getFriends } = require("../services/getFriends");
+const { getUsers } = require("../services/getUsers");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -235,3 +236,20 @@ exports.getFriends = asyncHandler(async (req, res, next) => {
 
   res.json(response);
 });
+
+// get all users searched for -> case insensitive
+exports.getUsersSearch = [
+  query("username").trim().escape().isLength({ min: 1, max: 15 }),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    const response = await getUsers(req.query.username);
+
+    return res.json(response);
+  }),
+];

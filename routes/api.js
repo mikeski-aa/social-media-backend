@@ -91,4 +91,10 @@ router.get(
   apiController.getFriends
 );
 
+router.get(
+  "/user/all",
+  passport.authenticate("jwt", { session: false }),
+  apiController.getUsersSearch
+);
+
 module.exports = router;
