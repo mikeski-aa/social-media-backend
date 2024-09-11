@@ -110,17 +110,17 @@ async function desd(userId) {
 }
 // desd(17);
 
-async function searchFriends(name) {
-  const response = await prisma.user.findMany({
-    where: {
-      username: {
-        contains: name,
-        mode: "insensitive",
-      },
-    },
-  });
+// async function searchFriends(name) {
+//   const response = await prisma.user.findMany({
+//     where: {
+//       username: {
+//         contains: name,
+//         mode: "insensitive",
+//       },
+//     },
+//   });
 
-  console.log(response);
-}
+//   console.log(response);
+// }
 
-searchFriends("SER");
+// searchFriends("SER");

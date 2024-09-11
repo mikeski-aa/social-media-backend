@@ -9,8 +9,12 @@ async function getUsers(name) {
           mode: "insensitive",
         },
       },
+      include: {
+        friendOf: true,
+      },
     });
 
+    console.log(response);
     return response;
   } catch (error) {
     console.log(error);

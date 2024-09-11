@@ -91,10 +91,18 @@ router.get(
   apiController.getFriends
 );
 
+// get all users searched for
 router.get(
   "/user/all",
   passport.authenticate("jwt", { session: false }),
   apiController.getUsersSearch
+);
+
+// create a new friend request
+router.post(
+  "/requests",
+  passport.authenticate("jwt", { session: false }),
+  apiController.postRequest
 );
 
 module.exports = router;

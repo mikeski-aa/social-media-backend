@@ -20,6 +20,7 @@ const {
 } = require("../services/updateCommentLikesRemove");
 const { getFriends } = require("../services/getFriends");
 const { getUsers } = require("../services/getUsers");
+const { postRequest } = require("../services/postRequest");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -249,6 +250,23 @@ exports.getUsersSearch = [
     }
 
     const response = await getUsers(req.query.username);
+
+    return res.json(response);
+  }),
+];
+
+// post a new request
+exports.postRequest = [
+  query("requesteeid").trim().escape().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    const response = await postRequest(req.user.id, req.query.requesteeid);
 
     return res.json(response);
   }),

@@ -55,5 +55,6 @@ model request {
   requestorId Int 
   requestee user @relation("requestee", fields: [requesteeId], references: [id])
   requesteeId Int
+  requestDate DateTime @default(now())
 
 }
