@@ -24,6 +24,8 @@ const { postRequest } = require("../services/postRequest");
 const { getIncomingRequests } = require("../services/getIncomingRequests");
 const { updateFriendsAccept } = require("../services/updateFriendsAccept");
 const { deleteRequest } = require("../services/deleteRequest");
+const { deleteFriend } = require("../services/deleteFriend");
+const { deleteRequestFromIds } = require("../services/deleteRequestFromIds");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -299,6 +301,12 @@ exports.putFriendAccept = [
       req.query.requesterid
     );
 
+    const deleteReq = await deleteRequestFromIds(
+      req.query.requesterid,
+      req.user.id
+    );
+
+    console.log(deleteReq);
     return res.json(response);
   }),
 ];
@@ -316,6 +324,22 @@ exports.deleteRequest = [
 
     const response = await deleteRequest(req.query.reqid);
 
+    return res.json(response);
+  }),
+];
+
+// delete / disconnect friend
+exports.deleteFriend = [
+  query("friendid").trim().escape().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    const response = await deleteFriend(req.user.id, req.query.friendid);
     return res.json(response);
   }),
 ];
