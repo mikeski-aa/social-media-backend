@@ -114,9 +114,18 @@ router.get(
 
 // update friends connecting them / accepting friend request
 router.put(
-  "friends/accept",
+  "/friends/accept",
   passport.authenticate("jwt", { session: false }),
   apiController.putFriendAccept
 );
 
+// decline friend request
+router.delete(
+  "/requests",
+  passport.authenticate("jwt", { session: false }),
+  apiController.deleteRequest
+);
+
+// delete / disconnect friend
+router.put("/friends/delete", passport.authenticate("jwt", { session: false }));
 module.exports = router;
