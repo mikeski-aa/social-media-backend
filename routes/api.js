@@ -112,4 +112,11 @@ router.get(
   apiController.getIncomingRequests
 );
 
+// update friends connecting them / accepting friend request
+router.put(
+  "friends/accept",
+  passport.authenticate("jwt", { session: false }),
+  apiController.putFriendAccept
+);
+
 module.exports = router;

@@ -22,6 +22,7 @@ const { getFriends } = require("../services/getFriends");
 const { getUsers } = require("../services/getUsers");
 const { postRequest } = require("../services/postRequest");
 const { getIncomingRequests } = require("../services/getIncomingRequests");
+const { updateFriendsAccept } = require("../services/updateFriendsAccept");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -280,3 +281,23 @@ exports.getIncomingRequests = asyncHandler(async (req, res, next) => {
 
   return res.json(response);
 });
+
+// update user to accept request connecting friends
+exports.putFriendAccept = [
+  query("requesterid").trim().escape().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    const response = await updateFriendsAccept(
+      req.user.id,
+      req.query.requesterid
+    );
+
+    return res.json(response);
+  }),
+];
