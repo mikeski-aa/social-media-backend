@@ -37,7 +37,9 @@ async function updateFriendsList(userA, userB) {
       id: +userA,
     },
     data: {
-      friends: { connect: [{ id: +userB }] },
+      friends: {
+        connect: [{ id: +userB }],
+      },
     },
   });
 
