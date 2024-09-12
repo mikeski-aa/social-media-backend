@@ -26,6 +26,7 @@ const { updateFriendsAccept } = require("../services/updateFriendsAccept");
 const { deleteRequest } = require("../services/deleteRequest");
 const { deleteFriend } = require("../services/deleteFriend");
 const { deleteRequestFromIds } = require("../services/deleteRequestFromIds");
+const { getStatusesForUser } = require("../services/getStatusesForUser");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -254,7 +255,7 @@ exports.getUsersSearch = [
       return res.status(400).json({ error: "Error with query value" });
     }
 
-    const response = await getUsers(req.query.username);
+    const response = await getUsers(req.query.username, req.user.id);
 
     return res.json(response);
   }),
@@ -341,5 +342,21 @@ exports.deleteFriend = [
 
     const response = await deleteFriend(req.user.id, req.query.friendid);
     return res.json(response);
+  }),
+];
+
+exports.getStatusesForUser = [
+  query("limit").trim().escape().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    const posts = await getStatusesForUser(req.user.id, limit);
+
+    return res.json(posts);
   }),
 ];

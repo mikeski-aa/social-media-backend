@@ -133,4 +133,11 @@ router.put(
   apiController.deleteFriend
 );
 
+// get posts for a specific user id, only show up to limit load
+router.get(
+  "/status/userpost",
+  passport.authenticate("jwt", { session: false }),
+  apiController.getStatusesForUser
+);
+
 module.exports = router;
