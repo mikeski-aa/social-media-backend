@@ -105,4 +105,11 @@ router.post(
   apiController.postRequest
 );
 
+// get all incoming reqs
+router.get(
+  "/requests",
+  passport.authenticate("jwt", { session: false }),
+  apiController.getIncomingRequests
+);
+
 module.exports = router;

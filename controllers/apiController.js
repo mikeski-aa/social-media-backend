@@ -21,6 +21,7 @@ const {
 const { getFriends } = require("../services/getFriends");
 const { getUsers } = require("../services/getUsers");
 const { postRequest } = require("../services/postRequest");
+const { getIncomingRequests } = require("../services/getIncomingRequests");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -256,6 +257,7 @@ exports.getUsersSearch = [
 ];
 
 // post a new request
+// TODO: ADD DUPLICATE CHECKING!
 exports.postRequest = [
   body("requesteeid").trim().escape().toInt(),
 
@@ -271,3 +273,10 @@ exports.postRequest = [
     return res.json(response);
   }),
 ];
+
+//get all incoming requests
+exports.getIncomingRequests = asyncHandler(async (req, res, next) => {
+  const response = await getIncomingRequests(req.user.id);
+
+  return res.json(response);
+});

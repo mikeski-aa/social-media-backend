@@ -11,6 +11,8 @@ async function getUsers(name) {
       },
       include: {
         friendOf: true,
+        reqOut: true,
+        reqIn: true,
       },
     });
 
