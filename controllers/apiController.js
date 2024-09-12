@@ -27,6 +27,7 @@ const { deleteRequest } = require("../services/deleteRequest");
 const { deleteFriend } = require("../services/deleteFriend");
 const { deleteRequestFromIds } = require("../services/deleteRequestFromIds");
 const { getStatusesForUser } = require("../services/getStatusesForUser");
+const { getCommentsForUser } = require("../services/getCommentsForUser");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -345,6 +346,7 @@ exports.deleteFriend = [
   }),
 ];
 
+// get all posts/statuses for given user, taking limit into account
 exports.getStatusesForUser = [
   query("limit").trim().escape().toInt(),
 
@@ -355,8 +357,25 @@ exports.getStatusesForUser = [
       return res.status(400).json({ error: "Error with query value" });
     }
 
-    const posts = await getStatusesForUser(req.user.id, limit);
-
+    const posts = await getStatusesForUser(req.user.id, req.query.limit);
+    console.log(posts);
     return res.json(posts);
+  }),
+];
+
+// get all comments for given user, taking limit into account
+exports.getCommentsForUser = [
+  query("limit").trim().escape().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    const comments = await getCommentsForUser(req.user.id, req.query.limit);
+
+    return res.json(comments);
   }),
 ];

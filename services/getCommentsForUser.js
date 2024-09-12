@@ -1,31 +1,25 @@
 const { prisma } = require("../config/db");
 
-async function getStatusesForUser(userid, limit) {
+async function getCommentsForUser(userid, limit) {
   try {
-    const response = await prisma.post.findMany({
+    const response = await prisma.comment.findMany({
       where: {
         userId: +userid,
       },
       include: {
         user: {
           select: {
-            id: true,
             username: true,
+            id: true,
             profilePic: true,
-          },
-        },
-        _count: {
-          select: {
-            comments: true,
           },
         },
       },
       orderBy: {
-        postDate: "desc",
+        commentDate: "desc",
       },
       take: limit,
     });
-
     console.log(response);
     return response;
   } catch (error) {
@@ -34,6 +28,6 @@ async function getStatusesForUser(userid, limit) {
   }
 }
 
-// getStatusesForUser(17, 99);
+module.exports = { getCommentsForUser };
 
-module.exports = { getStatusesForUser };
+// getCommentsForUser(17, 10);

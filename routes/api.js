@@ -140,4 +140,11 @@ router.get(
   apiController.getStatusesForUser
 );
 
+// get all comments for one user
+router.get(
+  "/comments/userpost",
+  passport.authenticate("jwt", { session: false }),
+  apiController.getCommentsForUser
+);
+
 module.exports = router;
