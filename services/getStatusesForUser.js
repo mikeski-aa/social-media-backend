@@ -26,7 +26,6 @@ async function getStatusesForUser(userid, limit) {
       take: limit,
     });
 
-    console.log(response);
     return response;
   } catch (error) {
     console.log(error);

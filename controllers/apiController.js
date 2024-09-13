@@ -349,6 +349,7 @@ exports.deleteFriend = [
 // get all posts/statuses for given user, taking limit into account
 exports.getStatusesForUser = [
   query("limit").trim().escape().toInt(),
+  query("id").trim().escape().toInt(),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -356,16 +357,24 @@ exports.getStatusesForUser = [
     if (!errors.isEmpty()) {
       return res.status(400).json({ error: "Error with query value" });
     }
+    console.log("//////////////////");
+    console.log(req.query.id);
+    console.log(isNaN(req.query.id));
 
-    const posts = await getStatusesForUser(req.user.id, req.query.limit);
-    console.log(posts);
-    return res.json(posts);
+    if (isNaN(req.query.id)) {
+      const posts = await getStatusesForUser(req.user.id, req.query.limit);
+      return res.json(posts);
+    } else {
+      const posts = await getStatusesForUser(req.query.id, req.query.limit);
+      return res.json(posts);
+    }
   }),
 ];
 
 // get all comments for given user, taking limit into account
 exports.getCommentsForUser = [
   query("limit").trim().escape().toInt(),
+  query("id").trim().escape().toInt(),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -374,8 +383,17 @@ exports.getCommentsForUser = [
       return res.status(400).json({ error: "Error with query value" });
     }
 
-    const comments = await getCommentsForUser(req.user.id, req.query.limit);
+    // if NaN => means no ID provided => means we are loading in our own profile
+    console.log("//////////////////");
+    console.log(req.query.id);
+    console.log(isNaN(req.query.id));
 
-    return res.json(comments);
+    if (isNaN(req.query.id)) {
+      const comments = await getCommentsForUser(req.user.id, req.query.limit);
+      return res.json(comments);
+    } else {
+      const comments = await getCommentsForUser(req.query.id, req.query.limit);
+      return res.json(comments);
+    }
   }),
 ];

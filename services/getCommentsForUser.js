@@ -20,7 +20,6 @@ async function getCommentsForUser(userid, limit) {
       },
       take: limit,
     });
-    console.log(response);
     return response;
   } catch (error) {
     console.log(error);
