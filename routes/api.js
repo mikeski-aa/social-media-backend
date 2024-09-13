@@ -149,7 +149,7 @@ router.get(
 
 // get specific user info
 router.get(
-  "user",
+  "/user",
   passport.authenticate("jwt", { session: false }),
   apiController.getUser
 );
