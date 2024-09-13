@@ -411,14 +411,7 @@ exports.getUser = [
       return res.status(400).json({ error: "Error with query value" });
     }
 
-    // check if user is friends, otherwise don't return anything as you should not be able to view profiles of people you aren't friends with
-    const friendCheck = checkFriends(req.user.id, req.query.id);
-
-    if (friendCheck) {
-      const response = await getUser(req.query.id);
-      return res.json(response);
-    } else {
-      return res.json({ message: "Not friends", friends: false });
-    }
+    const response = await getUser(req.query.id);
+    return res.json(response);
   }),
 ];
