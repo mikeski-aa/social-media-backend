@@ -28,6 +28,7 @@ const { deleteFriend } = require("../services/deleteFriend");
 const { deleteRequestFromIds } = require("../services/deleteRequestFromIds");
 const { getStatusesForUser } = require("../services/getStatusesForUser");
 const { getCommentsForUser } = require("../services/getCommentsForUser");
+const { getUser } = require("../services/getUser");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -395,5 +396,24 @@ exports.getCommentsForUser = [
       const comments = await getCommentsForUser(req.query.id, req.query.limit);
       return res.json(comments);
     }
+  }),
+];
+
+// get specific user based on id
+exports.getUser = [
+  query("id").trim().escape().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    // check if user is friends, otherwise don't return anything as you should not be able to view profiles of people you aren't friends with
+
+    const response = await getUser(req.query.id);
+
+    return res.json(response);
   }),
 ];

@@ -147,4 +147,11 @@ router.get(
   apiController.getCommentsForUser
 );
 
+// get specific user info
+router.get(
+  "user",
+  passport.authenticate("jwt", { session: false }),
+  apiController.getUser
+);
+
 module.exports = router;
