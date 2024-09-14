@@ -243,3 +243,26 @@ async function testFriends(userid) {
 }
 
 // testFriends(17);
+
+// https://res.cloudinary.com/dyev7n9en/image/upload/fl_preserve_transparency/v1726306408/person_1_ms0j5t.jpg?_s=public-apps
+
+async function updateUser(userid) {
+  const response = await prisma.user.update({
+    where: {
+      id: userid,
+    },
+    data: {
+      profilePic:
+        "https://res.cloudinary.com/dyev7n9en/image/upload/fl_preserve_transparency/v1726306408/person_1_ms0j5t.jpg?_s=public-apps",
+    },
+  });
+
+  console.log(response);
+}
+
+// updateUser(17);
+// updateUser(18);
+// updateUser(19);
+// updateUser(20);
+// updateUser(21);
+// updateUser(22);
