@@ -25,6 +25,9 @@ model user {
   friendOf user[] @relation("friends")
   reqOut request[] @relation("requester")
   reqIn request[] @relation("requestee")
+  dateJoined DateTime @default(now())
+  backgroundPic String @default("https://i.imgur.com/EyEtF0O.png")
+
 }
 
 model post {

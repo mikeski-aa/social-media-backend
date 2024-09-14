@@ -29,7 +29,7 @@ const { deleteRequestFromIds } = require("../services/deleteRequestFromIds");
 const { getStatusesForUser } = require("../services/getStatusesForUser");
 const { getCommentsForUser } = require("../services/getCommentsForUser");
 const { getUser } = require("../services/getUser");
-const { checkFriends } = require("../services/checkFriends");
+const { updateUserAvatar } = require("../services/updateUserAvatar");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -415,3 +415,16 @@ exports.getUser = [
     return res.json(response);
   }),
 ];
+
+// upload new user picture
+exports.postAvatar = asyncHandler(async (req, res, next) => {
+  console.log(req.file.path);
+  const response = await postPicture(req.file.path);
+
+  // update user
+  const userUpdate = await updateUserAvatar(req.user.id, response.result.url);
+
+  return res.json(userUpdate);
+});
+
+// upload new user banner

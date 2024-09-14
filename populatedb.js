@@ -260,6 +260,21 @@ async function updateUser(userid) {
   console.log(response);
 }
 
+async function updateUsername(userid, username) {
+  const response = await prisma.user.update({
+    where: {
+      id: userid,
+    },
+    data: {
+      username: username,
+    },
+  });
+
+  console.log(response);
+}
+
+updateUsername(17, "VisitorProfile");
+
 // updateUser(17);
 // updateUser(18);
 // updateUser(19);
