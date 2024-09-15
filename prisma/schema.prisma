@@ -26,7 +26,7 @@ model user {
   reqOut request[] @relation("requester")
   reqIn request[] @relation("requestee")
   dateJoined DateTime @default(now())
-  backgroundPic String @default("https://i.imgur.com/EyEtF0O.png")
+  backgroundPic String @default("https://images.unsplash.com/photo-1579547621706-1a9c79d5c9f1")
 
 }
 

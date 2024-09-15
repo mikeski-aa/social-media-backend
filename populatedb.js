@@ -252,8 +252,8 @@ async function updateUser(userid) {
       id: userid,
     },
     data: {
-      profilePic:
-        "https://res.cloudinary.com/dyev7n9en/image/upload/fl_preserve_transparency/v1726306408/person_1_ms0j5t.jpg?_s=public-apps",
+      backgroundPic:
+        "https://images.unsplash.com/photo-1579547621706-1a9c79d5c9f1",
     },
   });
 
@@ -273,11 +273,11 @@ async function updateUsername(userid, username) {
   console.log(response);
 }
 
-updateUsername(17, "VisitorProfile");
+// updateUsername(17, "VisitorProfile");
 
-// updateUser(17);
-// updateUser(18);
-// updateUser(19);
-// updateUser(20);
-// updateUser(21);
-// updateUser(22);
+updateUser(17);
+updateUser(18);
+updateUser(19);
+updateUser(20);
+updateUser(21);
+updateUser(22);
