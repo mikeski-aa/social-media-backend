@@ -31,6 +31,7 @@ const { getCommentsForUser } = require("../services/getCommentsForUser");
 const { getUser } = require("../services/getUser");
 const { updateUserAvatar } = require("../services/updateUserAvatar");
 const { postAvatar } = require("../services/postAvatar");
+const { updateUserBanner } = require("../services/updateUserBanner");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -429,3 +430,13 @@ exports.postAvatar = asyncHandler(async (req, res, next) => {
 });
 
 // upload new user banner
+exports.postBanner = asyncHandler(async (req, res, next) => {
+  console.log(req.file.path);
+  const newId = req.user.id + "banner";
+  const response = await postAvatar(req.file.path, newId);
+  console.log(response);
+  // update user
+  const userUpdate = await updateUserBanner(req.user.id, response.result.url);
+
+  return res.json(userUpdate);
+});

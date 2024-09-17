@@ -154,11 +154,20 @@ router.get(
   apiController.getUser
 );
 
+// post new user avatar
 router.post(
   "/user/avatar",
   passport.authenticate("jwt", { session: false }),
   upload.single("picture"),
   apiController.postAvatar
+);
+
+// post new user banner
+router.post(
+  "/user/banner",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("picture"),
+  apiController.postBanner
 );
 
 module.exports = router;
