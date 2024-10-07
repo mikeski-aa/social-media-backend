@@ -170,4 +170,17 @@ router.post(
   apiController.postBanner
 );
 
+// delete status
+router.delete(
+  "/status/delete",
+  passport.authenticate("jwt", { session: false }),
+  apiController.deletePost
+);
+
+// delete comment
+router.delete(
+  "/comments/delete",
+  passport.authenticate("jwt", { session: false }),
+  apiController.deleteComment
+);
 module.exports = router;

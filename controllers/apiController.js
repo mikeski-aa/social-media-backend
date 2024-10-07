@@ -32,6 +32,8 @@ const { getUser } = require("../services/getUser");
 const { updateUserAvatar } = require("../services/updateUserAvatar");
 const { postAvatar } = require("../services/postAvatar");
 const { updateUserBanner } = require("../services/updateUserBanner");
+const { deleteStatus } = require("../services/deleteStatus");
+const { deleteComment } = require("../services/deleteComment");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -440,3 +442,41 @@ exports.postBanner = asyncHandler(async (req, res, next) => {
 
   return res.json(userUpdate);
 });
+
+// delete post
+exports.deletePost = [
+  query("statusid").trim().escape().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    console.log(req.query.statusid);
+
+    // delete the status
+    const response = await deleteStatus(req.query.statusid);
+    return res.json(req.query.statusid);
+  }),
+];
+
+// delete comment
+exports.deleteComment = [
+  query("commentid").trim().escape().toInt(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: "Error with query value" });
+    }
+
+    console.log(req.query.commentid);
+
+    // delete the status
+    const response = await deleteComment(req.query.commentid);
+    return res.json(response);
+  }),
+];
