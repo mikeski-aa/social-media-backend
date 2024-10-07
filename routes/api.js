@@ -24,6 +24,13 @@ router.post(
   apiController.postLogin
 );
 
+// post guest login
+router.post(
+  "/guest",
+  // passport.authenticate("local", { session: false }),
+  apiController.postGuestLogin
+);
+
 // check login status
 router.get(
   "/login",

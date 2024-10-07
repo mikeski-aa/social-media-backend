@@ -34,6 +34,7 @@ const { postAvatar } = require("../services/postAvatar");
 const { updateUserBanner } = require("../services/updateUserBanner");
 const { deleteStatus } = require("../services/deleteStatus");
 const { deleteComment } = require("../services/deleteComment");
+const { getGuestUserInfo } = require("../services/getGuestUserInfo");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 
@@ -55,6 +56,20 @@ exports.postLogin = asyncHandler(async (req, res, next) => {
     expiresIn: "12h",
   });
   return res.json({ token: token, user: req.user });
+});
+
+// guest login
+// need to hide in env variables
+exports.postGuestLogin = asyncHandler(async (req, res, next) => {
+  console.log("hello");
+  const token = jwt.sign({ email: process.env.GUEST_EMAIL }, "secret", {
+    expiresIn: "12h",
+  });
+  console.log(token);
+
+  // since we don't use passport to auth, we need to fet data from DB to get user
+  const user = await getGuestUserInfo(process.env.GUEST_EMAIL);
+  return res.json({ token: token, user: user });
 });
 
 // check login status
