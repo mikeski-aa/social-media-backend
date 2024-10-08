@@ -14,7 +14,7 @@ require("./config/passport");
 var app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: [process.env.LOCAL_URL, process.env.NONLOCAL_URL],
   optionSuccessStatus: 200,
 };
 
